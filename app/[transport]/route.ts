@@ -40,7 +40,8 @@ const handler = createMcpHandler(
           description: "Echo a message",
         },
         "calculate-bmi": {
-          description: "Calculate Body Mass Index from weight (kg) and height (m)",
+          description:
+            "Calculate Body Mass Index from weight (kg) and height (m)",
         },
       },
     },
@@ -52,4 +53,7 @@ const handler = createMcpHandler(
   }
 );
 
-export { handler as GET, handler as POST, handler as DELETE };
+// Explicitly export methods — avoids 405 errors
+export const GET = handler;
+export const POST = handler;
+export const DELETE = handler;
