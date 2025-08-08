@@ -53,7 +53,4 @@ const handler = createMcpHandler(
   }
 );
 
-// Explicitly export methods — avoids 405 errors
-export const GET = handler;
-export const POST = handler;
-export const DELETE = handler;
+export { handler as GET, handler as POST, handler as DELETE };
