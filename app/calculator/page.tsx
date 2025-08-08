@@ -15,7 +15,7 @@ export default function CalculatorPage() {
 
     try {
       // MCP-style request for your BMI tool
-      const response = await fetch("/http", {
+      const response = await fetch("/mcp", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
