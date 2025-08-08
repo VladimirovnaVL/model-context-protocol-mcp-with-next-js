@@ -16,19 +16,17 @@ export default function CalculatorPage() {
     try {
       // MCP-style request for your BMI tool
       const response = await fetch("/api/http", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          type: "invokeTool",
-          name: "calculate-bmi",
-          arguments: {
-            weightKg: Number(weightKg),
-            heightM: Number(heightM),
-          },
-        }),
-      });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    type: "invokeTool",
+    name: "calculate-bmi",
+    arguments: {
+      weightKg: Number(weightKg),
+      heightM: Number(heightM),
+    },
+  }),
+});
 
       if (!response.ok) {
         throw new Error(`Server error: ${response.status}`);
