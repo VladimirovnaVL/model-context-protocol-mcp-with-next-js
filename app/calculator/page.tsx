@@ -14,29 +14,31 @@ export default function CalculatorPage() {
     setResult(null);
 
     try {
-      // MCP-style request for your BMI tool
+      // Use the single MCP route that handles both MCP protocol and simple HTTP requests
       const response = await fetch("/mcp", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    type: "invokeTool",
-    name: "calculate-bmi",
-    arguments: {
-      weightKg: Number(weightKg),
-      heightM: Number(heightM),
-    },
-  }),
-});
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          toolName: "calculate-bmi",
+          arguments: {
+            weightKg: Number(weightKg),
+            heightM: Number(heightM),
+          },
+        }),
+      });
 
       if (!response.ok) {
-        throw new Error(`Server error: ${response.status}`);
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Server error: ${response.status}`);
       }
 
       const data = await response.json();
-
-      // MCP tools return { content: [ { type, text } ] }
-      const textResult = data?.content?.[0]?.text || "No result";
-      setResult(textResult);
+      
+      if (data.success) {
+        setResult(data.result);
+      } else {
+        throw new Error(data.error || 'Unknown error');
+      }
     } catch (err: any) {
       setResult(`Error: ${err.message}`);
     } finally {
