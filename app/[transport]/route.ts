@@ -3,6 +3,7 @@ import { z } from "zod";
 
 const handler = createMcpHandler(
   async (server) => {
+    // Echo tool
     server.tool(
       "echo",
       "description",
@@ -13,12 +14,33 @@ const handler = createMcpHandler(
         content: [{ type: "text", text: `Tool echo: ${message}` }],
       })
     );
+
+    // BMI Calculator tool
+    server.tool(
+      "calculate-bmi",
+      "Calculate Body Mass Index",
+      {
+        weightKg: z.number(),
+        heightM: z.number(),
+      },
+      async ({ weightKg, heightM }) => {
+        const bmi = weightKg / (heightM * heightM);
+        return {
+          content: [
+            { type: "text", text: `Your BMI is ${bmi.toFixed(2)}` },
+          ],
+        };
+      }
+    );
   },
   {
     capabilities: {
       tools: {
         echo: {
           description: "Echo a message",
+        },
+        "calculate-bmi": {
+          description: "Calculate Body Mass Index from weight (kg) and height (m)",
         },
       },
     },
